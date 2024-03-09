@@ -21,17 +21,29 @@ repositories {
 	mavenCentral()
 }
 
+// dependencies {
+// 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+// 	implementation 'org.springframework.boot:spring-boot-starter-web'
+// 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+// 	compileOnly 'org.projectlombok:lombok'
+// 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+// 	runtimeOnly 'com.h2database:h2'
+// 	annotationProcessor 'org.projectlombok:lombok'
+// 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+// 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
+// }
+
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc:2.7.1' // 2.7.1を指定
+	implementation 'org.springframework.boot:spring-boot-starter-web:2.7.1' // 2.7.1を指定
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2' // 2.2.2を指定
+	compileOnly 'org.projectlombok:lombok:1.18.24' // 1.18.24を指定
+	developmentOnly 'org.springframework.boot:spring-boot-devtools:2.7.1' // 2.7.1を指定
+	runtimeOnly 'com.h2database:h2:2.1.214' // 2.1.214を指定
+	annotationProcessor 'org.projectlombok:lombok:1.18.24' // 1.18.24を指定
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.1'  // 2.7.1を指定
 }
+
 
 tasks.named('bootBuildImage') {
 	builder = 'paketobuildpacks/builder-jammy-base:latest'
