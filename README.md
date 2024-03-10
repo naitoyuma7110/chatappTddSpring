@@ -5,7 +5,7 @@
 WebAPI に対する基本的なテスト手段の提供
 
 - WebAPI へのリクエストとレスポンス検証(MockMvcRequestBuilders、AutoConfigureMockMv)
-- テストへの Controller、DB の依存性注入(Autowired)
+- テストに対する Controller、DB の依存性注入(Autowired)
 
 ### DBUnit
 
