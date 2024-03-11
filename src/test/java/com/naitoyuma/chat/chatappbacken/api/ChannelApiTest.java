@@ -62,7 +62,6 @@ public class ChannelApiTest {
         Arguments.arguments(
             """
                 {
-                    "id": 1,
                     "name": "テスト"
                 }
                 """,
