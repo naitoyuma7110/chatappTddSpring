@@ -21,6 +21,22 @@ DB に関連する基本的なテスト手段の提供
 
 - 複数のテストへの対応、共通処理の関数化、引数渡し(ParameterizedTest,Arguments)
 
+### Spring による DI
+
+Sprint の DI コンテナ(IoC:Inversion of Control)の役割
+
+- 管理対象のインスタンス生成
+- 管理対象のインスタンス保持
+- 管理対象のインスタンス注入
+
+Spring が管理対象とするインスタンス(Bean)
+
+- @Component
+- @Controller
+- @RestController
+- @Service
+- @Repository
+
 ## API 一覧
 
 | リクエスト     | HTTP メソッド | エンドポイント | データ形式 | レスポンス                                  |
