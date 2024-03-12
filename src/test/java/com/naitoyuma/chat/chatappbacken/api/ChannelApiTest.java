@@ -62,25 +62,37 @@ public class ChannelApiTest {
         Arguments.arguments(
             """
                 {
-                    "name": "テスト"
+                    "name": "1回目のcreateテスト"
                 }
                 """,
             """
                 {
                     "id": 1,
-                    "name": "テスト"
+                    "name": "1回目のcreateテスト"
                 }
                 """),
         Arguments.arguments(
             """
                 {
-                    "name": "テスト2"
+                    "name": "2回目のcreateテスト"
                 }
                 """,
             """
                 {
                     "id": 2,
-                    "name": "テスト2"
+                    "name": "2回目のcreateテスト"
+                }
+                """),
+        Arguments.arguments(
+            """
+                {
+                    "name": "3回目のcreateテスト"
+                }
+                """,
+            """
+                {
+                    "id": 3,
+                    "name": "3回目のcreateテスト"
                 }
                 """)
 
