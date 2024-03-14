@@ -1,4 +1,19 @@
-## 各種パッケージのメモ
+## 開発メモ
+
+### ディレクトリ構成
+
+src  
+└ main  
+ └ java  
+ ├ app  
+ │ ├ controller ※Controller を配置  
+ │ └ service ※Application Service を配置  
+ ├ domain  
+ │ └ [ドメイン名]  
+ │ ├ model ※Domain Model を配置  
+ │ └ service ※Domain Service と Repository インターフェースを配置  
+ └ infrastructure  
+ └ [ドメイン名] ※Repository 実装クラスを配置
 
 ### spring-test
 
@@ -31,15 +46,22 @@ Sprint の DI コンテナ(IoC:Inversion of Control)の役割
 
 Spring が管理対象とするインスタンス(Bean)
 
+@ComponentScan の対象
+
 - @Component
 - @Controller
 - @RestController
 - @Service
 - @Repository
 
-## API 一覧
+### MyBatis を対象として ORM の依存性管理
 
-| リクエスト     | HTTP メソッド | エンドポイント | データ形式 | レスポンス                                  |
-| -------------- | ------------- | -------------- | ---------- | ------------------------------------------- |
-| チャンネル作成 | POST          | /channels      | JSON       | 作成されたチャンネルの詳細                  |
-| チャンネル参照 | GET           | /channels      | JSON       | DB に保存されているすべてのチャンネルの詳細 |
+MyBatis の@Mapper は@ComponentScan では DI 対象に追加されない。
+@Mapper を DI 対象に追加するためには、MyBatis が提供する@MapperScan を Configuration クラスに追加する。
+
+しかし、今回はセットアップ時に mybatis-starter を選択に含めたため@MapperScan の省略が可能
+
+## フォーマッター設定方法
+
+VSCode の Java 開発環境にフォーマッターを設定する  
+https://qiita.com/ryo8000/items/60714fa9c5ce261c1798
