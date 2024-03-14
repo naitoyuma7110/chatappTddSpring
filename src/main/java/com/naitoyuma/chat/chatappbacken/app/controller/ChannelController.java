@@ -23,13 +23,11 @@ public class ChannelController {
 
   @PostMapping()
   public Channel create(@RequestBody Channel channel) {
-    // TODO: Serviceを作成してビジネスロジックを実装するまでそのままchannelを返す
     return channelService.create(channel);
   }
 
   @GetMapping()
   public List<Channel> findAll() {
-    // TODO: Serviceを作成するまでは空のリストを返す
     return channelService.findAll();
   }
 }

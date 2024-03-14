@@ -6,8 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.naitoyuma.chat.chatappbacken.domain.channels.model.Channel;
-import com.naitoyuma.chat.chatappbacken.domain.service.ChannelDomainService;
-
+import com.naitoyuma.chat.chatappbacken.domain.channels.service.ChannelDomainService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
