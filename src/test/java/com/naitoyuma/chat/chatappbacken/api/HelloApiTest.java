@@ -42,13 +42,11 @@ public class HelloApiTest {
     databaseTester.onSetup();
 
     // Controllerのモックを使用しリクエストとレスポンスの検証を行う(modelやserviceなど他レイヤーとは切り離されている)
-    mockMvc.perform(
-        MockMvcRequestBuilders.get("/hello" + queryString)
-            .accept(MediaType.APPLICATION_JSON))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect((result) -> JSONAssert.assertEquals(expectedBody,
-            result.getResponse().getContentAsString(),
-            false));
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.get("/hello" + queryString).accept(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status().isOk()).andExpect((result) -> JSONAssert
+            .assertEquals(expectedBody, result.getResponse().getContentAsString(), false));
 
     // DBのモックを使用しDBデータの整合性の検証を行う(Controllerやserviceなど他レイヤーとは切り離されている)
     var actualDataSet = databaseTester.getConnection().createDataSet();
@@ -68,22 +66,15 @@ public class HelloApiTest {
     return Stream.of(
         // Stream型で各種パラメータを渡しテストを実行する
         // テストはパラメータ毎に管理され選択して実行できる
-        Arguments.arguments(
-            "",
-            """
-                {
-                  "message": "Hello, world!"
-                }
-                """,
-            "default"),
-        Arguments.arguments(
-            "?name=naito",
-            """
-                {
-                  "message": "Hello, naito"
-                }
-                """,
-            "naito")
+        Arguments.arguments("", """
+            {
+              "message": "Hello, world!"
+            }
+            """, "default"), Arguments.arguments("?name=naito", """
+            {
+              "message": "Hello, naito"
+            }
+            """, "naito")
 
     );
 

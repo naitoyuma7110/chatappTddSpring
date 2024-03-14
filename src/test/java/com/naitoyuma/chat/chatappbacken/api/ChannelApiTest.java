@@ -23,15 +23,11 @@ public class ChannelApiTest {
 
   @Test
   public void channelGetTest() throws Exception {
-    mockMvc.perform(
-        MockMvcRequestBuilders.get("/channels"))
+    mockMvc.perform(MockMvcRequestBuilders.get("/channels"))
         .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect((result) -> JSONAssert.assertEquals(
-            """
-                  []
-                """,
-            result.getResponse().getContentAsString(),
-            false));
+        .andExpect((result) -> JSONAssert.assertEquals("""
+              []
+            """, result.getResponse().getContentAsString(), false));
   }
 
   @SuppressWarnings("null")
@@ -39,19 +35,11 @@ public class ChannelApiTest {
   @MethodSource("channelTestProvider")
   public void channelPostTest(String queryString, String expectedBody) throws Exception {
 
-    mockMvc.perform(
-        MockMvcRequestBuilders.post("/channels")
-            .content(
-                queryString)
-            .contentType(
-                MediaType.APPLICATION_JSON)
-            .accept(
-                MediaType.APPLICATION_JSON_UTF8))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect((result) -> JSONAssert.assertEquals(
-            expectedBody,
-            result.getResponse().getContentAsString(),
-            false));
+    mockMvc
+        .perform(MockMvcRequestBuilders.post("/channels").content(queryString)
+            .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON_UTF8))
+        .andExpect(MockMvcResultMatchers.status().isOk()).andExpect((result) -> JSONAssert
+            .assertEquals(expectedBody, result.getResponse().getContentAsString(), false));
   }
 
   // Helloテストに各種引き数を渡すproviderメソッド
@@ -59,42 +47,34 @@ public class ChannelApiTest {
     return Stream.of(
         // Stream型で各種パラメータを渡しテストを実行する
         // テストはパラメータ毎に管理され選択して実行できる
-        Arguments.arguments(
-            """
-                {
-                    "name": "1回目のcreateテスト"
-                }
-                """,
-            """
-                {
-                    "id": 1,
-                    "name": "1回目のcreateテスト"
-                }
-                """),
-        Arguments.arguments(
-            """
-                {
-                    "name": "2回目のcreateテスト"
-                }
-                """,
-            """
-                {
-                    "id": 2,
-                    "name": "2回目のcreateテスト"
-                }
-                """),
-        Arguments.arguments(
-            """
-                {
-                    "name": "3回目のcreateテスト"
-                }
-                """,
-            """
-                {
-                    "id": 3,
-                    "name": "3回目のcreateテスト"
-                }
-                """)
+        Arguments.arguments("""
+            {
+                "name": "1回目のcreateテスト"
+            }
+            """, """
+            {
+                "id": 1,
+                "name": "1回目のcreateテスト"
+            }
+            """), Arguments.arguments("""
+            {
+                "name": "2回目のcreateテスト"
+            }
+            """, """
+            {
+                "id": 2,
+                "name": "2回目のcreateテスト"
+            }
+            """), Arguments.arguments("""
+            {
+                "name": "3回目のcreateテスト"
+            }
+            """, """
+            {
+                "id": 3,
+                "name": "3回目のcreateテスト"
+            }
+            """)
 
     );
 
