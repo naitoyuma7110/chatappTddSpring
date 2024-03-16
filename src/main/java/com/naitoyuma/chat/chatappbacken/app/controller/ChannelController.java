@@ -1,7 +1,7 @@
 package com.naitoyuma.chat.chatappbacken.app.controller;
 
 import java.util.List;
-
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +22,7 @@ public class ChannelController {
   private final ChannelService channelService;
 
   @PostMapping()
-  public Channel create(@RequestBody Channel channel) {
+  public Channel create(@RequestBody @Valid Channel channel) {
     return channelService.create(channel);
   }
 

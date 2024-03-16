@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ChannelApiTest {
@@ -74,10 +76,37 @@ public class ChannelApiTest {
                 "id": 3,
                 "name": "3回目のcreateテスト"
             }
-            """)
+            """),
+        Arguments.arguments(
+            """
+                {
+                    "name": "errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"
+                }
+                """,
+            """
+                {
+                    "id": 4,
+                    "name": "errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr"
+                }
+                """)
 
     );
-
   }
+
+  @SuppressWarnings("null")
+  @ParameterizedTest
+  @MethodSource("invalidChannelTestProvider")
+  public void invalidChannelPostTest(String queryString, String expectedErrorMessage)
+      throws Exception {
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.post("/channels").content(queryString)
+            .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON_UTF8))
+        .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    // .andExpect(
+    // MockMvcResultMatchers.content().string("{列 \"NAME CHARACTER VARYING(30)\" の値が長過ぎます"));
+  }
+
+
 
 }
