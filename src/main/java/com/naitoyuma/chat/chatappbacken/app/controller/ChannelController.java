@@ -2,6 +2,7 @@ package com.naitoyuma.chat.chatappbacken.app.controller;
 
 import java.util.List;
 import javax.validation.Valid;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,13 +17,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/channels")
+@Validated
 public class ChannelController {
 
   // コンストラクタが 1 つしかない場合、コンストラクタの@Autowiredを省略しても constructor injection が実行される
   private final ChannelService channelService;
 
   @PostMapping()
-  public Channel create(@RequestBody @Valid Channel channel) {
+  public Channel create(@Valid @RequestBody Channel channel) {
     return channelService.create(channel);
   }
 
