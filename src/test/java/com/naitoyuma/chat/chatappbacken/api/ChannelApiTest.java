@@ -84,15 +84,15 @@ public class ChannelApiTest {
   @SuppressWarnings("null")
   @ParameterizedTest
   @MethodSource("invalidChannelTestProvider")
-  public void invalidChannelPostTest(String queryString) throws Exception {
+  public void invalidChannelPostTest(String queryString, String invalidRequestBody)
+      throws Exception {
 
     //
     mockMvc
         .perform(MockMvcRequestBuilders.post("/channels").content(queryString)
             .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON_UTF8))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest());
-    // .andExpect(
-    // MockMvcResultMatchers.content().string("{列 \"NAME CHARACTER VARYING(30)\" の値が長過ぎます"));
+        .andExpect(MockMvcResultMatchers.status().isBadRequest()).andExpect((result) -> JSONAssert
+            .assertEquals(invalidRequestBody, result.getResponse().getContentAsString(), false));
   }
 
 
@@ -103,9 +103,15 @@ public class ChannelApiTest {
             {
                 "name": "30文字以上のメッセージですううううううううううううううううううううううううううううううううううううううううううううううううう"
             }
-            """), Arguments.arguments("""
+            """, """
             {
-                "name": ""
+              "status": 400,
+              "errors": [
+              {
+                "field": "name",
+                "message": "Name must be between 1 and 10 characters"
+              }
+            ]
             }
             """)
 
