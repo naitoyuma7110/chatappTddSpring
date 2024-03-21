@@ -54,12 +54,24 @@ Spring が管理対象とするインスタンス(Bean)
 - @Service
 - @Repository
 
-### MyBatis を対象として ORM の依存性管理
+### MyBatis を対象とした ORM の依存性管理
 
 MyBatis の@Mapper は@ComponentScan では DI 対象に追加されない。
 @Mapper を DI 対象に追加するためには、MyBatis が提供する@MapperScan を Configuration クラスに追加する。
 
 しかし、今回はセットアップ時に mybatis-starter を選択に含めたため@MapperScan の省略が可能
+
+### Controllerに対するリクエストバリデーション
+パッケージ
+- spring-boot-starter-validation
+- validation-api
+
+https://www.baeldung.com/spring-boot-bean-validation
+
+### Contorollerの共通の例外ハンドラ
+@RestControllerAdviceの利用
+
+https://zenn.dev/karaageeeee/articles/cb428b126e82ea
 
 ## フォーマッター設定方法
 
