@@ -109,7 +109,7 @@ public class ChannelApiTest {
               "errors": [
               {
                 "field": "name",
-                "message": "Name must be between 1 and 10 characters"
+                "message": "Name must be between 1 and 30 characters"
               }
             ]
             }

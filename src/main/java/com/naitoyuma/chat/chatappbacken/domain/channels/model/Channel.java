@@ -9,6 +9,6 @@ public class Channel {
   private int id;
 
   @NotBlank
-  @Size(min = 1, max = 30, message = "Name must be between 1 and 10 characters")
+  @Size(min = 1, max = 30, message = "Name must be between 1 and 30 characters")
   private String name;
 }
