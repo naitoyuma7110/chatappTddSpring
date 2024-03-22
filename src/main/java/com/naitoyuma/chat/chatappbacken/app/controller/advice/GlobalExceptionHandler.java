@@ -27,6 +27,15 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
+  /*
+   * ErrorResponseのリスト型errorsフィールドを下記Json形式で返す
+   * 
+   * "errors": [
+   * 
+   * { "field": "name", "message": "Name must be between 1 and 30 characters" },
+   * 
+   * { "field": "name", "message": "any message" }
+   */
   @Data
   static class ErrorResponse {
     private int status;
