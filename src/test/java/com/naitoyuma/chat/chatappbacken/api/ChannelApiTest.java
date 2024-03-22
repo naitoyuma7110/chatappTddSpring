@@ -1,6 +1,7 @@
 package com.naitoyuma.chat.chatappbacken.api;
 
 import java.util.stream.Stream;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -23,8 +24,10 @@ public class ChannelApiTest {
   @Autowired
   private MockMvc mockMvc;
 
+  @DisplayName("【GET】正常系")
   @Test
   public void channelGetTest() throws Exception {
+
     mockMvc.perform(MockMvcRequestBuilders.get("/channels"))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect((result) -> JSONAssert.assertEquals("""
@@ -32,11 +35,14 @@ public class ChannelApiTest {
             """, result.getResponse().getContentAsString(), false));
   }
 
+  // 正常系
+  @DisplayName("【POST】正常系")
   @SuppressWarnings("null")
   @ParameterizedTest
   @MethodSource("channelTestProvider")
   public void channelPostTest(String queryString, String expectedBody) throws Exception {
 
+    // APIのモック化
     mockMvc
         .perform(MockMvcRequestBuilders.post("/channels").content(queryString)
             .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON_UTF8))
@@ -44,7 +50,7 @@ public class ChannelApiTest {
             .assertEquals(expectedBody, result.getResponse().getContentAsString(), false));
   }
 
-  // Helloテストに各種引き数を渡すproviderメソッド
+  // channelPostTestに各種引き数を渡すproviderメソッド
   private static Stream<Arguments> channelTestProvider() {
     return Stream.of(
         // Stream型で各種パラメータを渡しテストを実行する
@@ -76,18 +82,27 @@ public class ChannelApiTest {
                 "id": 3,
                 "name": "3回目のcreateテスト"
             }
-            """)
-
-    );
+            """), Arguments.arguments("""
+            {
+                "id": 5,
+                "hello":"Hi!",
+                "name": "3回目のcreateテスト"
+            }
+            """, """
+            {
+                "id": 4,
+                "name": "3回目のcreateテスト"
+            }
+            """));
   }
 
+  // 異常系
   @SuppressWarnings("null")
   @ParameterizedTest
   @MethodSource("invalidChannelTestProvider")
   public void invalidChannelPostTest(String queryString, String invalidRequestBody)
       throws Exception {
 
-    //
     mockMvc
         .perform(MockMvcRequestBuilders.post("/channels").content(queryString)
             .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON_UTF8))
@@ -101,7 +116,7 @@ public class ChannelApiTest {
 
         Arguments.arguments("""
             {
-                "name": "30文字以上のメッセージですううううううううううううううううううううううううううううううううううううううううううううううううう"
+                "name": "30文字以上のチャンネル名です。30文字以上のチャンネル名です。30文字以上のチャンネル名です。30文字以上のチャンネル名です。"
             }
             """, """
             {
@@ -113,10 +128,34 @@ public class ChannelApiTest {
               }
             ]
             }
-            """)
-
-    );
+            """), Arguments.arguments("""
+            {
+            }
+            """, """
+            {
+              "status": 400,
+              "errors": [
+              {
+                "field": "name",
+                "message": "Name is required"
+              }
+            ]
+            }
+            """), Arguments.arguments("""
+            {}
+            """, """
+            {
+              "status": 400,
+              "errors": [
+              {
+                "field": "name",
+                "message": "Name is required"
+              }
+            ]
+            }
+            """));
   }
+
 
 
 }
