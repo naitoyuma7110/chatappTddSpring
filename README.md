@@ -22,6 +22,19 @@ WebAPI に対する基本的なテスト手段の提供
 - WebAPI へのリクエストとレスポンス検証(MockMvcRequestBuilders、AutoConfigureMockMv)
 - テストに対する Controller、DB の依存性注入(Autowired)
 
+## テストの概要
+
+API、DB をモック化しテストに必要な条件を揃えて各種リクエストを実行
+レスポンスと実行後の DB 状態を検証
+
+![alt text](image.png)
+
+## JUnit
+
+テストメソッド実行手順の簡略化
+
+- 複数のテストへの対応、共通処理の関数化、引数渡し(ParameterizedTest,Arguments)
+
 ## DBUnit
 
 DB に関連する基本的なテスト手段の提供
@@ -29,12 +42,6 @@ DB に関連する基本的なテスト手段の提供
 - モック化した DB に対する操作(IDatabaseTester)
 - CSV などの定義から検証レコード作成(CsvURLDataSet)
 - 比較、検証(Assertion)
-
-## JUnit
-
-テストメソッド実行手順の簡略化
-
-- 複数のテストへの対応、共通処理の関数化、引数渡し(ParameterizedTest,Arguments)
 
 ## Spring による DI
 
@@ -54,22 +61,32 @@ Spring が管理対象とするインスタンス(Bean)
 - @Service
 - @Repository
 
-## MyBatis を対象とした ORM の依存性管理
+## MyBatis
+
+### H2 DB の利用
+
+application.yml に仮想 DB として H2 の接続設定を記載
+main と test 下の"./resource/schema.sql"が起動の度に実行される
+
+### MyBatis を対象とした ORM の依存性管理
 
 MyBatis の@Mapper は@ComponentScan では DI 対象に追加されない。
 @Mapper を DI 対象に追加するためには、MyBatis が提供する@MapperScan を Configuration クラスに追加する。
 
 しかし、今回はセットアップ時に mybatis-starter を選択に含めたため@MapperScan の省略が可能
 
-## Controllerに対するリクエストバリデーション
+## Controller に対するリクエストバリデーション
+
 パッケージ
+
 - spring-boot-starter-validation
 - validation-api
 
 https://www.baeldung.com/spring-boot-bean-validation
 
-## Contorollerの共通の例外ハンドラ
-@RestControllerAdviceの利用
+## Controller の共通の例外ハンドラ
+
+@RestControllerAdvice の利用
 
 https://zenn.dev/karaageeeee/articles/cb428b126e82ea
 
