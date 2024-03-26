@@ -35,7 +35,7 @@ public class HelloApiTest {
   @MethodSource("helloTestProvider") // 静的Providerメソッドを使用してパラメータを渡す
   public void helloTest(String queryString, String expectedBody, String dbPath) throws Exception {
 
-    // Given、テスト実行に必要なレコードをDBのモックにセットする
+    // Given:テスト実行に必要なレコードをDBのモックにセットする
     IDatabaseTester databaseTester = new DataSourceDatabaseTester(dataSource);
     URL givenUrl = this.getClass().getResource("/hello/hello/" + dbPath + "/given/");
     databaseTester.setDataSet(new CsvURLDataSet(givenUrl));
