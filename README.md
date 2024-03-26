@@ -83,7 +83,7 @@ MyBatis の@Mapper は@ComponentScan では DI 対象に追加されない。
 - spring-boot-starter-validation
 - validation-api
 
-https://www.baeldung.com/spring-boot-bean-validation
+[https://www.baeldung.com/spring-boot-bean-validation](https://sebenkyo.com/2020/08/02/post-1260/)
 
 ## Controller の共通の例外ハンドラ
 
