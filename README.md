@@ -27,7 +27,8 @@ WebAPI に対する基本的なテスト手段の提供
 API、DB をモック化しテストに必要な条件を揃えて各種リクエストを実行
 レスポンスと実行後の DB 状態を検証
 
-![alt text](image.png)
+![image](https://github.com/naitoyuma7110/chatappTddSpring/assets/128150297/4669c9e1-dbb6-449a-bc3f-8724caede421)
+
 
 ## JUnit
 
