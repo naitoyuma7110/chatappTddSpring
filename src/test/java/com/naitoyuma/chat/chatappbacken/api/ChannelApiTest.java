@@ -34,11 +34,13 @@ public class ChannelApiTest {
   private DataSource dataSource;
 
   @DisplayName("【GET】正常系")
-  @Test
-  public void channelGetTest() throws Exception {
+  @SuppressWarnings("null")
+  @ParameterizedTest
+  @MethodSource("channelGetTestProvider")
+  public void channelGetTest(String expectedBody, String dbPath) throws Exception {
 
     IDatabaseTester databaseTester = new DataSourceDatabaseTester(dataSource);
-    URL givenUrl = this.getClass().getResource("/channels/findAll/alreadyExist/given/");
+    URL givenUrl = this.getClass().getResource("/channels/findAll/" + dbPath + "/given/");
     // setDataSetでレコードが挿入されるテーブルは"table-ordering.txt"に順番で記載
     databaseTester.setDataSet(new CsvURLDataSet(givenUrl));
     databaseTester.onSetup();
@@ -66,18 +68,41 @@ public class ChannelApiTest {
 
     var actualDataSet = databaseTester.getConnection().createDataSet();
     var actualTestTable = actualDataSet.getTable("channels");
-    URL expectedUrl = this.getClass().getResource("/channels/findAll/alreadyExist/given/");
+    URL expectedUrl = this.getClass().getResource("/channels/findAll/" + dbPath + "/given/");
     var expectedDataSet = new CsvURLDataSet(expectedUrl);
     var expectedTestTable = expectedDataSet.getTable("channels");
     // DBの変更は行われない
     Assertion.assertEquals(expectedTestTable, actualTestTable);
   }
 
+  // channelPostTestに各種引き数を渡すproviderメソッド
+  private static Stream<Arguments> channelGetTestProvider() {
+    return Stream.of(
+        // Stream型で各種パラメータを渡しテストを実行する
+        // テストはパラメータ毎に管理され選択して実行できる
+        Arguments.arguments("""
+            [
+              {
+              "id": 1,
+              "name": "1つ目のチャンネル"
+              },
+              {
+              "id": 2,
+              "name": "2つ目のチャンネル"
+              },
+              {
+              "id": 3,
+              "name": "既にDBに2件のチャンネルが存在する"
+              }
+            ]
+            """, "alreadyExist"));
+  }
+
   // 正常系
   @DisplayName("【POST】正常系")
   @SuppressWarnings("null")
   @ParameterizedTest
-  @MethodSource("channelTestProvider")
+  @MethodSource("channelPostTestProvider")
   public void channelPostTest(String queryString, String expectedBody, String dbPath)
       throws Exception {
 
@@ -109,7 +134,7 @@ public class ChannelApiTest {
   }
 
   // channelPostTestに各種引き数を渡すproviderメソッド
-  private static Stream<Arguments> channelTestProvider() {
+  private static Stream<Arguments> channelPostTestProvider() {
     return Stream.of(
         // Stream型で各種パラメータを渡しテストを実行する
         // テストはパラメータ毎に管理され選択して実行できる
@@ -138,7 +163,7 @@ public class ChannelApiTest {
   @DisplayName("【POST】異常系")
   @SuppressWarnings("null")
   @ParameterizedTest
-  @MethodSource("invalidChannelTestProvider")
+  @MethodSource("invalidChannelPostTestProvider")
   public void invalidChannelPostTest(String queryString, String invalidRequestBody)
       throws Exception {
 
@@ -150,7 +175,7 @@ public class ChannelApiTest {
   }
 
 
-  private static Stream<Arguments> invalidChannelTestProvider() {
+  private static Stream<Arguments> invalidChannelPostTestProvider() {
     return Stream.of(
 
         Arguments.arguments("""
