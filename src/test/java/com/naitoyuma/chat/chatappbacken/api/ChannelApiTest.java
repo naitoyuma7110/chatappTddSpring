@@ -1,6 +1,12 @@
 package com.naitoyuma.chat.chatappbacken.api;
 
+import java.net.URL;
 import java.util.stream.Stream;
+import javax.sql.DataSource;
+import org.dbunit.Assertion;
+import org.dbunit.DataSourceDatabaseTester;
+import org.dbunit.IDatabaseTester;
+import org.dbunit.dataset.csv.CsvURLDataSet;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,6 +30,9 @@ public class ChannelApiTest {
   @Autowired
   private MockMvc mockMvc;
 
+  @Autowired
+  private DataSource dataSource;
+
   @DisplayName("【GET】正常系")
   @Test
   public void channelGetTest() throws Exception {
@@ -40,7 +49,15 @@ public class ChannelApiTest {
   @SuppressWarnings("null")
   @ParameterizedTest
   @MethodSource("channelTestProvider")
-  public void channelPostTest(String queryString, String expectedBody) throws Exception {
+  public void channelPostTest(String queryString, String expectedBody, String dbPath)
+      throws Exception {
+
+    // Given:テスト実行に必要なレコードをDBのモックにセットする
+    IDatabaseTester databaseTester = new DataSourceDatabaseTester(dataSource);
+    URL givenUrl = this.getClass().getResource("/channels/create/" + dbPath + "/given/");
+    // setDataSetでレコードが挿入されるテーブルは"table-ordering.txt"に順番で記載
+    databaseTester.setDataSet(new CsvURLDataSet(givenUrl));
+    databaseTester.onSetup();
 
     // APIのモック化
     mockMvc
@@ -48,6 +65,18 @@ public class ChannelApiTest {
             .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(MockMvcResultMatchers.status().isOk()).andExpect((result) -> JSONAssert
             .assertEquals(expectedBody, result.getResponse().getContentAsString(), false));
+
+    // DBのモックを使用しDBデータの整合性の検証を行う(Controllerやserviceなど他レイヤーとは切り離されている)
+    var actualDataSet = databaseTester.getConnection().createDataSet();
+    // テスト実行後のDBレコード
+    var actualTestTable = actualDataSet.getTable("channels");
+
+    URL expectedUrl = this.getClass().getResource("/channels/create/" + dbPath + "/expected/");
+    var expectedDataSet = new CsvURLDataSet(expectedUrl);
+    // 期待するDBレコード
+    var expectedTestTable = expectedDataSet.getTable("channels");
+    // 比較
+    Assertion.assertEquals(expectedTestTable, actualTestTable);
   }
 
   // channelPostTestに各種引き数を渡すproviderメソッド
@@ -57,46 +86,27 @@ public class ChannelApiTest {
         // テストはパラメータ毎に管理され選択して実行できる
         Arguments.arguments("""
             {
-                "name": "1回目のcreateテスト"
+                "name": "1つ目のチャンネル"
             }
             """, """
             {
                 "id": 1,
-                "name": "1回目のcreateテスト"
+                "name": "1つ目のチャンネル"
             }
-            """), Arguments.arguments("""
+            """, "default"), Arguments.arguments("""
             {
-                "name": "2回目のcreateテスト"
-            }
-            """, """
-            {
-                "id": 2,
-                "name": "2回目のcreateテスト"
-            }
-            """), Arguments.arguments("""
-            {
-                "name": "3回目のcreateテスト"
+                "name": "既にDBに2件のチャンネルが存在する"
             }
             """, """
             {
                 "id": 3,
-                "name": "3回目のcreateテスト"
+                "name": "既にDBに2件のチャンネルが存在する"
             }
-            """), Arguments.arguments("""
-            {
-                "id": 5,
-                "hello":"Hi!",
-                "name": "3回目のcreateテスト"
-            }
-            """, """
-            {
-                "id": 4,
-                "name": "3回目のcreateテスト"
-            }
-            """));
+            """, "alreadyExist"));
   }
 
   // 異常系
+  @DisplayName("【POST】異常系")
   @SuppressWarnings("null")
   @ParameterizedTest
   @MethodSource("invalidChannelTestProvider")
