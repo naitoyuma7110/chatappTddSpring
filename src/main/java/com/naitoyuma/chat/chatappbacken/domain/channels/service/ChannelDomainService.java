@@ -3,7 +3,6 @@ package com.naitoyuma.chat.chatappbacken.domain.channels.service;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Collections;
 
 
 import com.naitoyuma.chat.chatappbacken.domain.channels.model.Channel;
@@ -31,7 +30,7 @@ public class ChannelDomainService {
   }
 
   public List<Channel> findAll() {
-    return Collections.emptyList();
+    return channelRepository.findAll();
   }
 
 }

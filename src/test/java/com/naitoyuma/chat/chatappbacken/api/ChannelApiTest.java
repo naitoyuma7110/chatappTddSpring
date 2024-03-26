@@ -37,11 +37,40 @@ public class ChannelApiTest {
   @Test
   public void channelGetTest() throws Exception {
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/channels"))
+    IDatabaseTester databaseTester = new DataSourceDatabaseTester(dataSource);
+    URL givenUrl = this.getClass().getResource("/channels/findAll/alreadyExist/given/");
+    // setDataSetでレコードが挿入されるテーブルは"table-ordering.txt"に順番で記載
+    databaseTester.setDataSet(new CsvURLDataSet(givenUrl));
+    databaseTester.onSetup();
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.get("/channels").contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect((result) -> JSONAssert.assertEquals("""
-              []
+            [
+              {
+              "id": 1,
+              "name": "1つ目のチャンネル"
+              },
+              {
+              "id": 2,
+              "name": "2つ目のチャンネル"
+              },
+              {
+              "id": 3,
+              "name": "既にDBに2件のチャンネルが存在する"
+              }
+            ]
             """, result.getResponse().getContentAsString(), false));
+
+    var actualDataSet = databaseTester.getConnection().createDataSet();
+    var actualTestTable = actualDataSet.getTable("channels");
+    URL expectedUrl = this.getClass().getResource("/channels/findAll/alreadyExist/given/");
+    var expectedDataSet = new CsvURLDataSet(expectedUrl);
+    var expectedTestTable = expectedDataSet.getTable("channels");
+    // DBの変更は行われない
+    Assertion.assertEquals(expectedTestTable, actualTestTable);
   }
 
   // 正常系
