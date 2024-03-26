@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-@Transactional // 自動でメソッドにトランザクション、例外時のロールバックが実行される
+@Transactional // 自動でメソッドにトランザクション、例外時にロールバックが実行される
 public class ChannelService {
 
   private final ChannelDomainService channelDomainService;
@@ -22,6 +22,10 @@ public class ChannelService {
 
   public List<Channel> findAll() {
     return channelDomainService.findAll();
+  }
+
+  public Channel update(Channel channel) {
+    return channelDomainService.update(channel);
   }
 
 }

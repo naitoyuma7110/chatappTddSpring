@@ -33,4 +33,11 @@ public class ChannelDomainService {
     return channelRepository.findAll();
   }
 
+  public Channel update(Channel channel) {
+
+    channelRepository.update(channel);
+
+    return channel;
+  }
+
 }

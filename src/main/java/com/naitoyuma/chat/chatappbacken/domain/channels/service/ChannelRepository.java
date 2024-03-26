@@ -13,4 +13,6 @@ public interface ChannelRepository {
 
   Optional<Integer> getMaxId();
 
+  void update(Channel channel);
+
 }

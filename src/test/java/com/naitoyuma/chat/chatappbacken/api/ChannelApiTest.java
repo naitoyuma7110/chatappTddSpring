@@ -195,18 +195,16 @@ public class ChannelApiTest {
             """));
   }
 
-
-
   // 正常系
   @DisplayName("【UPDATE】正常系")
   @SuppressWarnings("null")
   @ParameterizedTest
   @MethodSource("updateTestProvider")
-  public void updateTest(String requestBody, int id, String dbPath) throws Exception {
+  public void updateTest(int id, String requestBody, String dbPath) throws Exception {
 
     // Given:テスト実行に必要なレコードをDBのモックにセットする
     IDatabaseTester databaseTester = new DataSourceDatabaseTester(dataSource);
-    URL givenUrl = this.getClass().getResource("/channels/create/" + dbPath + "/given/");
+    URL givenUrl = this.getClass().getResource("/channels/update/" + dbPath + "/given/");
     databaseTester.setDataSet(new CsvURLDataSet(givenUrl));
     databaseTester.onSetup();
 
@@ -234,10 +232,10 @@ public class ChannelApiTest {
   }
 
   private static Stream<Arguments> updateTestProvider() {
-    return Stream.of(Arguments.arguments("""
+    return Stream.of(Arguments.arguments(3, """
         {
             "name": "更新された3つ目のチャンネル"
         }
-        """, 3, "default"));
+        """, "default"));
   }
 }
