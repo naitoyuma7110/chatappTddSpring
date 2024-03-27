@@ -24,11 +24,12 @@ WebAPI に対する基本的なテスト手段の提供
 
 ## テストの概要
 
+API と DB に区分してそれぞれを検証
+
 API、DB をモック化しテストに必要な条件を揃えて各種リクエストを実行  
 レスポンスと実行後の DB 内容を検証
 
 ![image](https://github.com/naitoyuma7110/chatappTddSpring/assets/128150297/4669c9e1-dbb6-449a-bc3f-8724caede421)
-
 
 ## JUnit
 
@@ -74,7 +75,7 @@ main と test 下の"./resource/schema.sql"が起動の度に実行される
 MyBatis の@Mapper は@ComponentScan では DI 対象に追加されない。
 @Mapper を DI 対象に追加するためには、MyBatis が提供する@MapperScan を Configuration クラスに追加する。
 
-しかし、今回はセットアップ時に mybatis-starter を選択に含めたため@MapperScan の省略が可能
+今回はセットアップ時に myBatis-starter を選択に含めたため@MapperScan の省略が可能
 
 ## Controller に対するリクエストバリデーション
 
