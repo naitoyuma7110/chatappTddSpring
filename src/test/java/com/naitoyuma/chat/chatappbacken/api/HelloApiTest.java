@@ -1,6 +1,7 @@
 package com.naitoyuma.chat.chatappbacken.api;
 
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -22,6 +23,7 @@ import javax.sql.DataSource;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class HelloApiTest {
+
   // 各種コントローラーを含むMVC環境をMockMvcとしてモック化しテスト用のメソッドで簡易的に使用可能にする
   @Autowired
   private MockMvc mockMvc;
@@ -78,5 +80,19 @@ public class HelloApiTest {
 
     );
 
+  }
+
+  @Test
+  public void hello2Test() throws Exception {
+
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.get("/hello" + "?name=naito").accept(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect((result) -> JSONAssert.assertEquals("""
+            {
+              "message": "Hello, naito"
+            }
+            """, result.getResponse().getContentAsString(), false));
   }
 }
