@@ -3,6 +3,7 @@ package com.naitoyuma.chat.chatappbacken.app.controller;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/channels")
 @Validated
+@CrossOrigin
 public class ChannelController {
 
   // コンストラクタが 1 つしかない場合@Autowiredを省略しても constructor injection が実行される
@@ -35,7 +37,7 @@ public class ChannelController {
   }
 
   @PutMapping("/{id}")
-  public Channel update(@PathVariable("id") int id, @Valid @RequestBody Channel channel) {
+  public Channel update(@PathVariable int id, @Valid @RequestBody Channel channel) {
     // @RestControllerによりリクエストのjsonデータはChannelに自動的にマッピングされインスタンス化される
     channel.setId(id);
 
